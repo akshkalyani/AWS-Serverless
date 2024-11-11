@@ -7,93 +7,137 @@ lambdas:
 events:
 - operation: deploy
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
+  bundle_name: task02_241111.155145
   deploy_name: task02
-  time_start: '2024-11-11T14:56:02Z'
-  time_end: '2024-11-11T14:56:25Z'
-  duration_sec: 23.21
+  time_start: '2024-11-11T15:54:41Z'
+  time_end: '2024-11-11T15:54:51Z'
+  duration_sec: 9.817
   status: succeeded
   rollback_on_error: false
 - operation: build
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
-  time_start: '2024-11-11T14:55:36Z'
-  time_end: '2024-11-11T14:55:43Z'
-  duration_sec: 7.393
+  bundle_name: task02_241111.155145
+  time_start: '2024-11-11T15:51:47Z'
+  time_end: '2024-11-11T15:51:55Z'
+  duration_sec: 7.476
 - operation: upload
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
-  time_start: '2024-11-11T14:55:41Z'
-  time_end: '2024-11-11T14:55:43Z'
-  duration_sec: 1.939
+  bundle_name: task02_241111.155145
+  time_start: '2024-11-11T15:51:52Z'
+  time_end: '2024-11-11T15:51:54Z'
+  duration_sec: 2.336
 - operation: package_meta
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
-  time_start: '2024-11-11T14:55:41Z'
-  time_end: '2024-11-11T14:55:41Z'
-  duration_sec: 0.0
+  bundle_name: task02_241111.155145
+  time_start: '2024-11-11T15:51:52Z'
+  time_end: '2024-11-11T15:51:52Z'
+  duration_sec: 0.009
 - operation: assemble
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
-  time_start: '2024-11-11T14:55:38Z'
-  time_end: '2024-11-11T14:55:41Z'
-  duration_sec: 3.388
+  bundle_name: task02_241111.155145
+  time_start: '2024-11-11T15:51:49Z'
+  time_end: '2024-11-11T15:51:52Z'
+  duration_sec: 2.952
 - operation: assemble_node
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
-  time_start: '2024-11-11T14:55:38Z'
-  time_end: '2024-11-11T14:55:41Z'
-  duration_sec: 3.373
+  bundle_name: task02_241111.155145
+  time_start: '2024-11-11T15:51:49Z'
+  time_end: '2024-11-11T15:51:52Z'
+  duration_sec: 2.938
 - operation: test
   initiator: akshdharmesh_kalyani
-  time_start: '2024-11-11T14:55:38Z'
-  time_end: '2024-11-11T14:55:38Z'
+  time_start: '2024-11-11T15:51:49Z'
+  time_end: '2024-11-11T15:51:49Z'
+  duration_sec: 0.009
+- operation: deploy
+  initiator: akshdharmesh_kalyani
+  bundle_name: task01_241108.182828
+  deploy_name: task01
+  time_start: '2024-11-08T18:43:59Z'
+  time_end: '2024-11-08T18:44:16Z'
+  duration_sec: 17.489
+  status: succeeded
+  rollback_on_error: false
+- operation: build
+  initiator: akshdharmesh_kalyani
+  bundle_name: task01_241108.182828
+  time_start: '2024-11-08T18:28:29Z'
+  time_end: '2024-11-08T18:28:33Z'
+  duration_sec: 4.027
+- operation: upload
+  initiator: akshdharmesh_kalyani
+  bundle_name: task01_241108.182828
+  time_start: '2024-11-08T18:28:32Z'
+  time_end: '2024-11-08T18:28:33Z'
+  duration_sec: 1.234
+- operation: package_meta
+  initiator: akshdharmesh_kalyani
+  bundle_name: task01_241108.182828
+  time_start: '2024-11-08T18:28:32Z'
+  time_end: '2024-11-08T18:28:32Z'
+  duration_sec: 0.016
+- operation: assemble
+  initiator: akshdharmesh_kalyani
+  bundle_name: task01_241108.182828
+  time_start: '2024-11-08T18:28:31Z'
+  time_end: '2024-11-08T18:28:32Z'
+  duration_sec: 1.405
+- operation: assemble_node
+  initiator: akshdharmesh_kalyani
+  bundle_name: task01_241108.182828
+  time_start: '2024-11-08T18:28:31Z'
+  time_end: '2024-11-08T18:28:32Z'
+  duration_sec: 1.405
+- operation: test
+  initiator: akshdharmesh_kalyani
+  time_start: '2024-11-08T18:28:31Z'
+  time_end: '2024-11-08T18:28:31Z'
   duration_sec: 0.0
 - operation: build
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145407
-  time_start: '2024-11-11T14:54:09Z'
-  time_end: '2024-11-11T14:54:16Z'
-  duration_sec: 7.575
+  bundle_name: task01_241108.180203
+  time_start: '2024-11-08T18:02:04Z'
+  time_end: '2024-11-08T18:02:09Z'
+  duration_sec: 4.578
 - operation: upload
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145407
-  time_start: '2024-11-11T14:54:14Z'
-  time_end: '2024-11-11T14:54:16Z'
-  duration_sec: 1.927
+  bundle_name: task01_241108.180203
+  time_start: '2024-11-08T18:02:07Z'
+  time_end: '2024-11-08T18:02:09Z'
+  duration_sec: 1.831
 - operation: package_meta
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145407
-  time_start: '2024-11-11T14:54:14Z'
-  time_end: '2024-11-11T14:54:14Z'
-  duration_sec: 0.011
+  bundle_name: task01_241108.180203
+  time_start: '2024-11-08T18:02:07Z'
+  time_end: '2024-11-08T18:02:07Z'
+  duration_sec: 0.0
 - operation: assemble
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145407
-  time_start: '2024-11-11T14:54:11Z'
-  time_end: '2024-11-11T14:54:14Z'
-  duration_sec: 3.554
+  bundle_name: task01_241108.180203
+  time_start: '2024-11-08T18:02:05Z'
+  time_end: '2024-11-08T18:02:07Z'
+  duration_sec: 1.354
 - operation: assemble_node
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145407
-  time_start: '2024-11-11T14:54:11Z'
-  time_end: '2024-11-11T14:54:14Z'
-  duration_sec: 3.539
+  bundle_name: task01_241108.180203
+  time_start: '2024-11-08T18:02:05Z'
+  time_end: '2024-11-08T18:02:07Z'
+  duration_sec: 1.35
 - operation: test
   initiator: akshdharmesh_kalyani
-  time_start: '2024-11-11T14:54:11Z'
-  time_end: '2024-11-11T14:54:11Z'
-  duration_sec: 0.0
+  time_start: '2024-11-08T18:02:05Z'
+  time_end: '2024-11-08T18:02:05Z'
+  duration_sec: 0.001
 locks:
   modification_lock:
-    last_modification_date: '2024-11-11T09:26:25Z'
+    last_modification_date: '2024-11-11T10:24:51Z'
     locked_till: null
     initiator: akshdharmesh_kalyani
 latest_deploy:
   initiator: akshdharmesh_kalyani
-  bundle_name: task02_241111.145534
+  bundle_name: task02_241111.155145
   deploy_name: task02
-  time_start: '2024-11-11T14:56:02Z'
-  time_end: '2024-11-11T14:56:25Z'
-  duration_sec: 23.21
+  time_start: '2024-11-11T15:54:41Z'
+  time_end: '2024-11-11T15:54:51Z'
+  duration_sec: 9.817
   is_succeeded: true
