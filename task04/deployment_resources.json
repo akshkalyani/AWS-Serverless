@@ -14,7 +14,11 @@
             "dynamodb:DeleteItem",
             "ssm:PutParameter",
             "ssm:GetParameter",
-            "kms:Decrypt"
+            "kms:Decrypt",
+            "sqs:ReceiveMessage",
+            "sqs:DeleteMessage",
+            "sqs:ChangeMessageVisibility",
+            "sqs:GetQueueAttributes"
           ],
           "Effect": "Allow",
           "Resource": "*"
@@ -23,12 +27,13 @@
       "Version": "2012-10-17"
     },
     "resource_type": "iam_policy",
+    "predefined_policies": ["AWSLambdaSQSQueueExecutionRole"],
     "tags": {}
   },
   "async_queue": {
     "resource_type": "sqs_queue",
     "fifo_queue": false,
-    "visibility_timeout": 30,
+    "visibility_timeout": 150,
     "delay_seconds": 0,
     "maximum_message_size": 1024,
     "message_retention_period": 60,
