@@ -1,70 +1,71 @@
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
-const moment = require('moment');
+const moment = require('moment'); // For formatting timestamps like in Java's DateTimeFormatter
 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const auditTable = process.env.AUDIT_TABLE;  // The Audit table name passed as an environment variable
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const targetTable = process.env.target_table;
 
-exports.handler = async (event) => {
-    for (const record of event.Records) {
-        console.log('Processing record: ', JSON.stringify(record));
+exports.handler = async (event, context) => {
+    try {
+        for (const record of event.Records) {
+            const eventName = record.eventName;
+            
+            if (eventName === 'INSERT') {
+                await addDataToAuditTable(record.dynamodb.NewImage);
+            } else if (eventName === 'MODIFY') {
+                await modifyDataToAuditTable(record.dynamodb.NewImage, record.dynamodb.OldImage);
+            } else {
+                // If not INSERT or MODIFY, skip processing
+                continue;
+            }
+        }
+        return "Success"; // or return an empty string if that’s what is expected
+    } catch (error) {
+        console.error('Error processing DynamoDB event:', error);
+        throw error;
+    }
+};
 
-        // Insert Event - A new item is added to the Configuration table
-        if (record.eventName === 'INSERT') {
-            const newItem = record.dynamodb.NewImage;
-            const itemKey = newItem.key.S;
-            const value = parseInt(newItem.value.N);
-            const modificationTime = moment.utc().toISOString(); // ISO 8601 format
+async function addDataToAuditTable(newImage) {
+    const key = newImage.key.S;
+    const value = parseInt(newImage.value.N);
+    
+    const newValue = {
+        key: key,
+        value: value
+    };
+    
+    const auditItem = {
+        TableName: targetTable,
+        Item: {
+            id: uuid.v4(),
+            itemKey: key,
+            modificationTime: moment().toISOString(), // Use ISO format
+            newValue: newValue
+        }
+    };
+    
+    await dynamoDb.put(auditItem).promise();
+}
 
-            const auditEntry = {
+async function modifyDataToAuditTable(newImage, oldImage) {
+    const key = newImage.key.S;
+    const oldValue = parseInt(oldImage.value.N);
+    const newValue = parseInt(newImage.value.N);
+    
+    if (newValue !== oldValue) {
+        const updateAuditItem = {
+            TableName: targetTable,
+            Item: {
                 id: uuid.v4(),
-                itemKey: itemKey,
-                modificationTime: modificationTime,
-                newValue: {
-                    key: itemKey,
-                    value: value,
-                },
-            };
-
-            // Insert audit entry into the Audit table
-            await dynamodb.put({
-                TableName: auditTable,
-                Item: auditEntry,
-            }).promise();
-
-            console.log('Audit entry created for INSERT event:', JSON.stringify(auditEntry));
-
-        } else if (record.eventName === 'MODIFY') {
-            // Modify Event - The value of an existing item in the Configuration table has changed
-            const newItem = record.dynamodb.NewImage;
-            const oldItem = record.dynamodb.OldImage;
-
-            const itemKey = newItem.key.S;
-            const newValue = parseInt(newItem.value.N);
-            const oldValue = parseInt(oldItem.value.N);
-            const modificationTime = moment.utc().toISOString(); // ISO 8601 format
-
-            const auditEntry = {
-                id: uuid.v4(),
-                itemKey: itemKey,
-                modificationTime: modificationTime,
+                itemKey: key,
+                modificationTime: moment().toISOString(), // Use ISO format
                 updatedAttribute: 'value',
                 oldValue: oldValue,
-                newValue: newValue,
-            };
-
-            // Insert audit entry into the Audit table
-            await dynamodb.put({
-                TableName: auditTable,
-                Item: auditEntry,
-            }).promise();
-
-            console.log('Audit entry created for MODIFY event:', JSON.stringify(auditEntry));
-        }
+                newValue: newValue
+            }
+        };
+        
+        await dynamoDb.put(updateAuditItem).promise();
     }
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'Audit records processed successfully' }),
-    };
-};
+}
