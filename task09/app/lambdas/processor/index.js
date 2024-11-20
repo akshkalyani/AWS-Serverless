@@ -1,59 +1,68 @@
-const axios = require('axios');
-const AWS = require('aws-sdk');
-
-// Initialize DynamoDB client
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
-
-// The Open-Meteo API URL (adjust latitude and longitude as needed)
-const OPEN_METEO_URL = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m';
-
+const axios = require('axios');  // Axios for API calls
+const AWS = require('aws-sdk');  // AWS SDK to interact with DynamoDB
+const { v4: uuidv4 } = require('uuid'); // For generating UUIDs
+ 
+// Create DynamoDB DocumentClient instance
+const docClient = new AWS.DynamoDB.DocumentClient();
+ 
 exports.handler = async (event) => {
-  try {
-    // Step 1: Fetch weather data from Open-Meteo API
-    const response = await axios.get(OPEN_METEO_URL);
-
-    // Extract relevant data from the response
-    const { current, hourly } = response.data;
-    const currentTime = current.time;
-    const temperature = current.temperature_2m;
-    const windSpeed = current.wind_speed_10m;
-
-    // Step 2: Prepare the data to be stored in DynamoDB
-    const weatherData = {
-      id: currentTime, // Assuming id as the timestamp of the weather data
-      Category: 'Current', // You can use this to categorize the data
-      Temperature: temperature,
-      WindSpeed: windSpeed,
-      Timestamp: currentTime, // Using the current time as the timestamp
-    };
-
-    // Step 3: Write the data to DynamoDB
-    const params = {
-      TableName: 'Weather', // Ensure this table exists in your DynamoDB
-      Item: weatherData
-    };
-
-    await dynamoDb.put(params).promise();
-
-    // Step 4: Return a success response
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Weather data successfully stored in DynamoDB',
-        data: weatherData
-      }),
-    };
-
-  } catch (error) {
-    // Handle any errors (e.g., API request failure, DynamoDB write failure)
-    console.error('Error occurred:', error);
-
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: 'Failed to retrieve or store weather data',
-        error: error.message
-      }),
-    };
-  }
+    // Fetch the table name from the environment variable
+    const targetTable = process.env.target_table;
+ 
+    // Open-Meteo API URL (You can customize with other parameters as needed)
+    const weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m';
+ 
+    try {
+        // Fetch weather data from the Open-Meteo API
+        const response = await axios.get(weatherApiUrl);
+        const weatherData = response.data;
+ 
+        // Format the data to match the expected structure
+        const weatherRecord = {
+            id: uuidv4(), // Generate a new UUID for the record
+            forecast: {
+                elevation: weatherData.elevation,
+                generationtime_ms: weatherData.generationtime_ms,
+                hourly: {
+                    temperature_2m: weatherData.hourly.temperature_2m,
+                    time: weatherData.hourly.time
+                },
+                hourly_units: {
+                    temperature_2m: weatherData.hourly_units.temperature_2m,
+                    time: weatherData.hourly_units.time
+                },
+                latitude: weatherData.latitude,
+                longitude: weatherData.longitude,
+                timezone: weatherData.timezone,
+                timezone_abbreviation: weatherData.timezone_abbreviation,
+                utc_offset_seconds: weatherData.utc_offset_seconds
+            }
+        };
+ 
+        // Define the DynamoDB parameters
+        const params = {
+            TableName: targetTable,
+            Item: weatherRecord
+        };
+ 
+        // Push the weather data into DynamoDB
+        await docClient.put(params).promise();
+ 
+        // Return a success response
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Weather data inserted into DynamoDB successfully' })
+        };
+ 
+    } catch (error) {
+        console.error('Error fetching weather data or inserting into DynamoDB:', error);
+ 
+        // Return an error response
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Failed to insert weather data into DynamoDB', error: error.message })
+        };
+    }
 };
+ 
+ 
