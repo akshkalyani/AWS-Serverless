@@ -24,7 +24,7 @@ exports.handler = async (event) => {
     const clientId = process.env.CUPClientId;
 
     // Parse the request body
-    let body = JSON.parse(event.body)
+    let body = await JSON.parse(event.body)
 
     console.log(body);
     console.log(event);
