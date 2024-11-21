@@ -8,6 +8,9 @@
   "memory": 128,
   "timeout": 100,
   "lambda_path": "lambdas\\api_handler",
+  "event_sources": [],
+  "publish_version": true,
+  "alias": "${lambdas_alias_name}",
   "dependencies": [
     {
       "resource_name": "${booking_userpool}",
@@ -22,7 +25,7 @@
       "resource_type":"dynamodb_table"
     }
   ],
-  "event_sources": [],
+ 
   "env_variables": {
     "CUPId": {
       "resource_name": "${booking_userpool}",
@@ -37,10 +40,7 @@
     "tablestable": "${tables_table}",
     "revtable": "${reservations_table}"
   },
-  "publish_version": false,
-  "alias": "${lambdas_alias_name}",
   "url_config": {},
   "ephemeral_storage": 512,
-  "logs_expiration": "${logs_expiration}",
   "tags": {}
 }
