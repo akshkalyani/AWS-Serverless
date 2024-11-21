@@ -16,7 +16,7 @@ const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const reservationsTable = 'cmtr-67a26271-Reservations-test'
+const reservationsTable = 'cmtr-67a7ca39--Reservations-test'
 const tablesTable = process.env.tablestable
 
 exports.handler = async (event) => {
@@ -226,7 +226,7 @@ exports.handler = async (event) => {
             FilterExpression: "number = :tableNumber",
             KeyConditionExpression: "number = :tableNumber",
             ProjectionExpression: "id, places",
-            TableName: "cmtr-67a26271-Tables-test",
+            TableName: "cmtr-67a7ca39--Tables-test",
         };
 
         const data = await dynamoDB.scan(params).promise();
@@ -239,7 +239,7 @@ exports.handler = async (event) => {
         try {
             const response = await dynamoDB
                 .scan({
-                    TableName: "cmtr-67a26271-Tables-test",
+                    TableName: "cmtr-67a7ca39--Tables-test",
                     FilterExpression: "#number = :tableNumberValue",
                     ExpressionAttributeNames: {
                         "#number": "number", // Ensure "number" is the actual attribute name
@@ -263,7 +263,7 @@ exports.handler = async (event) => {
             const tableNumber = reservationData.tableNumber
             const response = await dynamoDB
                 .scan({
-                    TableName: "cmtr-67a26271-Reservations-test",
+                    TableName: "cmtr-67a7ca39--Reservations-test",
                     ExpressionAttributeValues: {
                         ":tableNumberValue": parseInt(tableNumber)
                     },
@@ -318,7 +318,7 @@ exports.handler = async (event) => {
 
             const id = uuidv4();
             const params = {
-                TableName: 'cmtr-67a26271-Reservations-test',
+                TableName: 'cmtr-67a7ca39--Reservations-test',
                 Item: {
                     "id": id,
                     "tableNumber": body.tableNumber,
